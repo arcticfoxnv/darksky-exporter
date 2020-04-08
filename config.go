@@ -17,12 +17,10 @@ func LoadConfig(filename string) (*Config, error) {
 		return nil, err
 	}
 
-	setDefaults(config)
-
 	return config, nil
 }
 
-func setDefaults(cfg *Config) {
+func setConfigDefaults(cfg *Config) {
 	if cfg.CacheTTL == 0 {
 		cfg.CacheTTL = DefaultCacheTTL
 	}

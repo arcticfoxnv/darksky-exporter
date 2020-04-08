@@ -54,6 +54,7 @@ func main() {
 		log.Println("Failed to load config file:", err)
 		config = &Config{}
 	}
+	setConfigDefaults(config)
 
 	config.ApiKey = getEnvWithDefault("DARKSKY_API_KEY", config.ApiKey)
 	config.City = getEnvWithDefault("DARKSKY_CITY", config.City)
