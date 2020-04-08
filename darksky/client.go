@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	FORECAST_KEY_FORMAT  = "forecast-%s-%s-%s"
+	FORECAST_KEY_FORMAT = "forecast-%s-%s-%s"
 )
 
 type Client struct {
-  ApiKey string
+	ApiKey string
 
 	apiCache *cache.Cache
 }
@@ -21,8 +21,8 @@ type Client struct {
 type Option func(*Client)
 
 func NewClient(apiKey string, cacheTTL time.Duration, options ...Option) *Client {
-  cli := &Client{
-		ApiKey: apiKey,
+	cli := &Client{
+		ApiKey:   apiKey,
 		apiCache: cache.New(cacheTTL, 10*time.Minute),
 	}
 
@@ -30,7 +30,7 @@ func NewClient(apiKey string, cacheTTL time.Duration, options ...Option) *Client
 		option(cli)
 	}
 
-  return cli
+	return cli
 }
 
 func (c *Client) Get(lat, long, time string, units forecast.Units, lang forecast.Lang) (*forecast.Forecast, error) {
