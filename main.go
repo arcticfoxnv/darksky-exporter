@@ -47,6 +47,7 @@ func preflightCheck(config *Config) error {
 
 func main() {
 	log.Printf("darksky-exporter v%s-%s", Version, Commit)
+	log.Println("Powered by Dark Sky - https://darksky.net/poweredby/")
 	cfgFilename := getEnvWithDefault("DARKSKY_CONFIG_FILE", "darksky.toml")
 	config, err := LoadConfig(cfgFilename)
 	if err != nil {
