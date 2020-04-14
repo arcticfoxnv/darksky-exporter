@@ -42,6 +42,10 @@ func preflightCheck(config *Config) error {
 		return errors.New("Cannot start exporter, city not set")
 	}
 
+	if config.LocationName == "" {
+		return errors.New("Cannot start exporter, location name not set")
+	}
+
 	return nil
 }
 
@@ -58,6 +62,7 @@ func main() {
 
 	config.ApiKey = getEnvWithDefault("DARKSKY_API_KEY", config.ApiKey)
 	config.City = getEnvWithDefault("DARKSKY_CITY", config.City)
+	config.LocationName = getEnvWithDefault("DARKSKY_LOCATION_NAME", config.LocationName)
 	listenPort := getEnvIntWithDefault("DARKSKY_LISTEN", DefaultListenPort)
 
 	if err := preflightCheck(config); err != nil {
@@ -75,9 +80,10 @@ func main() {
 	}
 
 	collectorOptions := DarkSkyCollectorOptions{
-		City: FormatCityName(config.City),
-		Lat:  fmt.Sprintf("%f", lat),
-		Long: fmt.Sprintf("%f", long),
+		City:         FormatCityName(config.City),
+		Lat:          fmt.Sprintf("%f", lat),
+		LocationName: FormatLocationName(config.LocationName),
+		Long:         fmt.Sprintf("%f", long),
 	}
 
 	registry := prometheus.NewRegistry()

@@ -6,9 +6,10 @@ import (
 )
 
 type Config struct {
-	ApiKey   string        `toml:"api_key"`
-	CacheTTL time.Duration `toml:"cache_ttl"`
-	City     string
+	ApiKey       string        `toml:"api_key"`
+	CacheTTL     time.Duration `toml:"cache_ttl"`
+	City         string
+	LocationName string `toml:"location_name"`
 }
 
 func LoadConfig(filename string) (*Config, error) {

@@ -20,3 +20,9 @@ func FormatCityName(city string) string {
 		strings.ReplaceAll(strings.ReplaceAll(city, ",", ""), " ", "-"),
 	)
 }
+
+func FormatLocationName(location string) string {
+	return strings.ToLower(
+		strings.ReplaceAll(location, " ", "-"),
+	)
+}

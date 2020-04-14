@@ -12,6 +12,7 @@ var collectorLabels = []string{
 	"latitude",
 	"longitude",
 	"city",
+	"location_name",
 }
 
 var (
@@ -65,11 +66,12 @@ var (
 )
 
 type DarkSkyCollectorOptions struct {
-	City  string
-	Lat   string
-	Lang  forecast.Lang
-	Long  string
-	Units forecast.Units
+	City         string
+	Lat          string
+	Lang         forecast.Lang
+	LocationName string
+	Long         string
+	Units        forecast.Units
 }
 
 type DarkSkyCollector struct {
@@ -118,6 +120,7 @@ func (c *DarkSkyCollector) Collect(ch chan<- prometheus.Metric) {
 	labels["latitude"] = fmt.Sprintf("%f", data.Latitude)
 	labels["longitude"] = fmt.Sprintf("%f", data.Longitude)
 	labels["city"] = c.Options.City
+	labels["location_name"] = c.Options.LocationName
 
 	apparentTemperatureGauge.With(labels).Set(data.Currently.ApparentTemperature)
 	cloudCoverGauge.With(labels).Set(data.Currently.CloudCover)
