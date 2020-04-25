@@ -1,9 +1,9 @@
 package main
 
 import (
-	"darksky-exporter/darksky"
 	"errors"
 	"fmt"
+	"github.com/arcticfoxnv/darksky-exporter/darksky"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"

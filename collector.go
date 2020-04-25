@@ -1,8 +1,8 @@
 package main
 
 import (
-	"darksky-exporter/darksky"
 	"fmt"
+	"github.com/arcticfoxnv/darksky-exporter/darksky"
 	forecast "github.com/mlbright/darksky/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"sync"
