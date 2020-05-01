@@ -14,13 +14,11 @@ func TestClientForecast(t *testing.T) {
 	defer s.Close()
 
 	req := &forecast.ForecastRequest{
-		Latitude:  0,
-		Longitude: 0,
+		Latitude:  40.7128,
+		Longitude: -74.0059,
 	}
 
-	cli := NewClient("abc123", time.Minute, func(c *Client) {
-		c.httpClient = s.Client()
-	})
+	cli := NewClient("abc123", time.Minute, SetHTTPClient(s.Client()))
 	cacheKey := fmt.Sprintf(FORECAST_KEY_FORMAT, req.Latitude, req.Longitude, req.Time)
 
 	_, found := cli.apiCache.Get(cacheKey)

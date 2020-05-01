@@ -1,24 +1,24 @@
 # HELP darksky_apparent_temperature The apparent (or feels like) temperature in degrees Fahrenheit.
 # TYPE darksky_apparent_temperature gauge
-darksky_apparent_temperature{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 65.5
+darksky_apparent_temperature{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 26.94
 # HELP darksky_cloud_cover The percentage of sky occluded by clouds, between 0 and 1, inclusive.
 # TYPE darksky_cloud_cover gauge
-darksky_cloud_cover{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 0.04
+darksky_cloud_cover{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 0.15
 # HELP darksky_dew_point The dew point in degrees Fahrenheit.
 # TYPE darksky_dew_point gauge
-darksky_dew_point{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 54.19
+darksky_dew_point{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 22.95
 # HELP darksky_humidity The relative humidity, between 0 and 1, inclusive.
 # TYPE darksky_humidity gauge
-darksky_humidity{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 0.67
+darksky_humidity{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 0.7
 # HELP darksky_pressure The sea-level air pressure in millibars.
 # TYPE darksky_pressure gauge
-darksky_pressure{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 1018.5
+darksky_pressure{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 1022.98
 # HELP darksky_temperature The air temperature in degrees Fahrenheit.
 # TYPE darksky_temperature gauge
-darksky_temperature{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 65.5
+darksky_temperature{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 31.44
 # HELP darksky_wind_gust The wind gust speed in miles per hour.
 # TYPE darksky_wind_gust gauge
-darksky_wind_gust{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 4.45
+darksky_wind_gust{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 5.24
 # HELP darksky_wind_speed The wind speed in miles per hour.
 # TYPE darksky_wind_speed gauge
-darksky_wind_speed{city="San Francisco, CA",latitude="37.77903",location_name="test",longitude="-122.42085"} 2.51
+darksky_wind_speed{city="New York, NY",latitude="40.712800",location_name="test",longitude="-74.005900"} 4.46

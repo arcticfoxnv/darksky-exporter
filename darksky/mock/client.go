@@ -43,7 +43,7 @@ func getTestDataPath() string {
 func NewMockServer() *MockServer {
 	m := &MockServer{}
 	m.mux = http.NewServeMux()
-	m.mux.Handle(path.Join("/forecast", ACCESS_TOKEN, "0,0"), m.checkAuthMiddleware(m.serveFile("full.json")))
+	m.mux.Handle(path.Join("/forecast", ACCESS_TOKEN, "40.7128,-74.0059"), m.checkAuthMiddleware(m.serveFile("full.json")))
 
 	m.testdataPath = filepath.Join(getTestDataPath(), "testdata")
 

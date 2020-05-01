@@ -21,6 +21,12 @@ type Client struct {
 
 type Option func(*Client)
 
+func SetHTTPClient(httpClient *http.Client) Option {
+	return func(client *Client) {
+		client.httpClient = httpClient
+	}
+}
+
 func NewClient(apiKey string, cacheTTL time.Duration, options ...Option) *Client {
 	cli := &Client{
 		apiCache: cache.New(cacheTTL, 10*time.Minute),
