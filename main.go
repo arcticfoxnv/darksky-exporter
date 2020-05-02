@@ -8,6 +8,7 @@ import (
 	forecast "github.com/shawntoffel/darksky"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func main() {
@@ -36,7 +37,7 @@ func main() {
 	collectorOptions := DarkSkyCollectorOptions{
 		City:         config.GetString(CFG_CITY),
 		Lat:          forecast.Measurement(lat),
-		LocationName: config.GetString(CFG_LOCATION_NAME),
+		LocationName: strings.ToLower(config.GetString(CFG_LOCATION_NAME)),
 		Long:         forecast.Measurement(long),
 	}
 
