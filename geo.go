@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/codingsince1985/geo-golang/openstreetmap"
-	"strings"
 )
 
 func LookupCityCoords(city string) (float64, float64, error) {

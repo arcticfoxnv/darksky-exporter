@@ -16,8 +16,8 @@ const (
 )
 
 var (
-	ErrApiKeyMissing = errors.New("Cannot start exporter, api key is missing")
-	ErrCityMissing = errors.New("Cannot start exporter, city not set")
+	ErrApiKeyMissing       = errors.New("Cannot start exporter, api key is missing")
+	ErrCityMissing         = errors.New("Cannot start exporter, city not set")
 	ErrLocationNameMissing = errors.New("Cannot start exporter, location name not set")
 )
 
