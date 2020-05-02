@@ -14,15 +14,3 @@ func LookupCityCoords(city string) (float64, float64, error) {
 
 	return location.Lat, location.Lng, nil
 }
-
-func FormatCityName(city string) string {
-	return strings.ToLower(
-		strings.ReplaceAll(strings.ReplaceAll(city, ",", ""), " ", "-"),
-	)
-}
-
-func FormatLocationName(location string) string {
-	return strings.ToLower(
-		strings.ReplaceAll(location, " ", "-"),
-	)
-}

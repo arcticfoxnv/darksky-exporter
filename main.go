@@ -34,9 +34,9 @@ func main() {
 	}
 
 	collectorOptions := DarkSkyCollectorOptions{
-		City:         FormatCityName(config.GetString(CFG_CITY)),
+		City:         config.GetString(CFG_CITY),
 		Lat:          forecast.Measurement(lat),
-		LocationName: FormatLocationName(config.GetString(CFG_LOCATION_NAME)),
+		LocationName: config.GetString(CFG_LOCATION_NAME),
 		Long:         forecast.Measurement(long),
 	}
 
