@@ -15,8 +15,14 @@ const (
 	CFG_LOCATION_NAME = "location_name"
 )
 
+var (
+	ErrApiKeyMissing = errors.New("Cannot start exporter, api key is missing")
+	ErrCityMissing = errors.New("Cannot start exporter, city not set")
+	ErrLocationNameMissing = errors.New("Cannot start exporter, location name not set")
+)
+
 func loadConfig() (*viper.Viper, error) {
-	v := viper.GetViper()
+	v := viper.New()
 
 	// Configure viper
 	v.SetConfigName("darksky")
@@ -44,15 +50,15 @@ func loadConfig() (*viper.Viper, error) {
 
 func preflightCheck(v *viper.Viper) error {
 	if v.GetString(CFG_API_KEY) == "" {
-		return errors.New("Cannot start exporter, api key is missing")
+		return ErrApiKeyMissing
 	}
 
 	if v.GetString(CFG_CITY) == "" {
-		return errors.New("Cannot start exporter, city not set")
+		return ErrCityMissing
 	}
 
 	if v.GetString(CFG_LOCATION_NAME) == "" {
-		return errors.New("Cannot start exporter, location name not set")
+		return ErrLocationNameMissing
 	}
 
 	return nil
