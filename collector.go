@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/arcticfoxnv/darksky-exporter/darksky"
-	forecast "github.com/mlbright/darksky/v2"
 	"github.com/prometheus/client_golang/prometheus"
+	forecast "github.com/shawntoffel/darksky"
 	"sync"
 )
 
@@ -67,11 +67,9 @@ var (
 
 type DarkSkyCollectorOptions struct {
 	City         string
-	Lat          string
-	Lang         forecast.Lang
+	Lat          forecast.Measurement
 	LocationName string
-	Long         string
-	Units        forecast.Units
+	Long         forecast.Measurement
 }
 
 type DarkSkyCollector struct {
@@ -103,13 +101,12 @@ func (c *DarkSkyCollector) Collect(ch chan<- prometheus.Metric) {
 	c.collectLock.Lock()
 	defer c.collectLock.Unlock()
 
-	data, err := c.client.Get(
-		c.Options.Lat,
-		c.Options.Long,
-		"now",
-		c.Options.Units,
-		c.Options.Lang,
-	)
+	req := &forecast.ForecastRequest{
+		Latitude:  c.Options.Lat,
+		Longitude: c.Options.Long,
+	}
+
+	data, err := c.client.Forecast(req)
 
 	if err != nil {
 		fmt.Printf("Error while getting forecast: %s\n", err)
@@ -122,14 +119,14 @@ func (c *DarkSkyCollector) Collect(ch chan<- prometheus.Metric) {
 	labels["city"] = c.Options.City
 	labels["location_name"] = c.Options.LocationName
 
-	apparentTemperatureGauge.With(labels).Set(data.Currently.ApparentTemperature)
-	cloudCoverGauge.With(labels).Set(data.Currently.CloudCover)
-	dewPointGauge.With(labels).Set(data.Currently.DewPoint)
-	humidityGauge.With(labels).Set(data.Currently.Humidity)
-	pressureGauge.With(labels).Set(data.Currently.Pressure)
-	temperatureGauge.With(labels).Set(data.Currently.Temperature)
-	windGustGauge.With(labels).Set(data.Currently.WindGust)
-	windSpeedGauge.With(labels).Set(data.Currently.WindSpeed)
+	apparentTemperatureGauge.With(labels).Set(float64(data.Currently.ApparentTemperature))
+	cloudCoverGauge.With(labels).Set(float64(data.Currently.CloudCover))
+	dewPointGauge.With(labels).Set(float64(data.Currently.DewPoint))
+	humidityGauge.With(labels).Set(float64(data.Currently.Humidity))
+	pressureGauge.With(labels).Set(float64(data.Currently.Pressure))
+	temperatureGauge.With(labels).Set(float64(data.Currently.Temperature))
+	windGustGauge.With(labels).Set(float64(data.Currently.WindGust))
+	windSpeedGauge.With(labels).Set(float64(data.Currently.WindSpeed))
 
 	apparentTemperatureGauge.Collect(ch)
 	cloudCoverGauge.Collect(ch)

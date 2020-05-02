@@ -2,47 +2,58 @@ package darksky
 
 import (
 	"fmt"
-	forecast "github.com/mlbright/darksky/v2"
 	"github.com/patrickmn/go-cache"
+	forecast "github.com/shawntoffel/darksky"
 	"log"
+	"net/http"
 	"time"
 )
 
 const (
-	FORECAST_KEY_FORMAT = "forecast-%s-%s-%s"
+	FORECAST_KEY_FORMAT = "forecast-%g-%g-%d"
 )
 
 type Client struct {
-	ApiKey string
-
-	apiCache *cache.Cache
+	apiCache   *cache.Cache
+	client     forecast.DarkSky
+	httpClient *http.Client
 }
 
 type Option func(*Client)
 
+func SetHTTPClient(httpClient *http.Client) Option {
+	return func(client *Client) {
+		client.httpClient = httpClient
+	}
+}
+
 func NewClient(apiKey string, cacheTTL time.Duration, options ...Option) *Client {
 	cli := &Client{
-		ApiKey:   apiKey,
 		apiCache: cache.New(cacheTTL, 10*time.Minute),
+		httpClient: &http.Client{
+			Timeout: 5 * time.Second,
+		},
 	}
 
 	for _, option := range options {
 		option(cli)
 	}
 
+	cli.client = forecast.NewWithClient(apiKey, cli.httpClient)
+
 	return cli
 }
 
-func (c *Client) Get(lat, long, time string, units forecast.Units, lang forecast.Lang) (*forecast.Forecast, error) {
-	cacheKey := fmt.Sprintf(FORECAST_KEY_FORMAT, lat, long, time)
+func (c *Client) Forecast(req *forecast.ForecastRequest) (forecast.ForecastResponse, error) {
+	cacheKey := fmt.Sprintf(FORECAST_KEY_FORMAT, req.Latitude, req.Longitude, req.Time)
 	if data, found := c.apiCache.Get(cacheKey); found {
-		return data.(*forecast.Forecast), nil
+		return data.(forecast.ForecastResponse), nil
 	}
-	log.Printf("Fetching forecast for %s, %s @ %s", lat, long, time)
+	log.Printf("Fetching forecast for %g, %g @ %d", req.Latitude, req.Longitude, req.Time)
 
-	data, err := forecast.Get(c.ApiKey, lat, long, time, units, lang)
+	data, err := c.client.Forecast(*req)
 	if err != nil {
-		return nil, err
+		return forecast.ForecastResponse{}, err
 	}
 
 	c.apiCache.Set(cacheKey, data, cache.DefaultExpiration)

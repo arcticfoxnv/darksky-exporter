@@ -6,6 +6,7 @@ import (
 	"github.com/arcticfoxnv/darksky-exporter/darksky"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	forecast "github.com/shawntoffel/darksky"
 	"log"
 	"net/http"
 	"os"
@@ -81,9 +82,9 @@ func main() {
 
 	collectorOptions := DarkSkyCollectorOptions{
 		City:         FormatCityName(config.City),
-		Lat:          fmt.Sprintf("%f", lat),
+		Lat:          forecast.Measurement(lat),
 		LocationName: FormatLocationName(config.LocationName),
-		Long:         fmt.Sprintf("%f", long),
+		Long:         forecast.Measurement(long),
 	}
 
 	registry := prometheus.NewRegistry()
