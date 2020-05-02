@@ -1,28 +1,65 @@
 package main
 
 import (
-	"github.com/BurntSushi/toml"
+	"errors"
+	"github.com/spf13/viper"
+	"os"
 	"time"
 )
 
-type Config struct {
-	ApiKey       string        `toml:"api_key"`
-	CacheTTL     time.Duration `toml:"cache_ttl"`
-	City         string
-	LocationName string `toml:"location_name"`
-}
+const (
+	CFG_API_KEY       = "api_key"
+	CFG_CACHE_TTL     = "cache_ttl"
+	CFG_CITY          = "city"
+	CFG_LISTEN_PORT   = "listen_port"
+	CFG_LOCATION_NAME = "location_name"
+)
 
-func LoadConfig(filename string) (*Config, error) {
-	config := &Config{}
-	if _, err := toml.DecodeFile(filename, config); err != nil {
-		return nil, err
+var (
+	ErrApiKeyMissing       = errors.New("Cannot start exporter, api key is missing")
+	ErrCityMissing         = errors.New("Cannot start exporter, city not set")
+	ErrLocationNameMissing = errors.New("Cannot start exporter, location name not set")
+)
+
+func loadConfig() (*viper.Viper, error) {
+	v := viper.New()
+
+	// Configure viper
+	v.SetConfigName("darksky")
+	v.SetConfigType("toml")
+	v.AddConfigPath("/etc")
+	v.AddConfigPath(".")
+	v.SetEnvPrefix("darksky")
+	v.AutomaticEnv()
+
+	if path, present := os.LookupEnv("DARKSKY_CONFIG_FILE"); present {
+		v.SetConfigFile(path)
 	}
 
-	return config, nil
+	// Configure defaults
+	v.SetDefault(CFG_LISTEN_PORT, 8080)
+	v.SetDefault(CFG_CACHE_TTL, 5*time.Minute)
+
+	// Read config
+	if err := v.ReadInConfig(); err != nil {
+		return v, err
+	}
+
+	return v, nil
 }
 
-func setConfigDefaults(cfg *Config) {
-	if cfg.CacheTTL == 0 {
-		cfg.CacheTTL = DefaultCacheTTL
+func preflightCheck(v *viper.Viper) error {
+	if v.GetString(CFG_API_KEY) == "" {
+		return ErrApiKeyMissing
 	}
+
+	if v.GetString(CFG_CITY) == "" {
+		return ErrCityMissing
+	}
+
+	if v.GetString(CFG_LOCATION_NAME) == "" {
+		return ErrLocationNameMissing
+	}
+
+	return nil
 }
